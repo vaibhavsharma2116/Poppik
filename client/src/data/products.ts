@@ -27,7 +27,50 @@ export const sampleProducts: Product[] = [
     howToUse: "Apply 2-3 drops to clean face in the morning. Follow with moisturizer and sunscreen.",
     tags: ["antioxidant", "brightening", "vitamin-c"]
   },
-  // Add more sample products as needed...
+  {
+    id: 2,
+    name: "Hydrating Face Moisturizer",
+    slug: "hydrating-face-moisturizer",
+    description: "A lightweight, non-greasy moisturizer that provides 24-hour hydration.",
+    shortDescription: "All-day Hydration for Soft Skin",
+    price: "425",
+    category: "skincare",
+    subcategory: "moisturizers",
+    imageUrl: "https://images.unsplash.com/photo-1556228720-195a672e8a03?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400",
+    rating: "4.4",
+    reviewCount: 1523,
+    inStock: true,
+    featured: false,
+    bestseller: true,
+    newLaunch: false,
+    size: "50ml",
+    ingredients: ["Hyaluronic Acid", "Ceramides", "Glycerin"],
+    benefits: ["Deep hydration", "Barrier repair", "Smooth texture"],
+    howToUse: "Apply to clean face morning and evening.",
+    tags: ["hydrating", "daily-use", "non-comedogenic"]
+  },
+  {
+    id: 3,
+    name: "Gentle Foaming Face Wash",
+    slug: "gentle-foaming-face-wash",
+    description: "A mild cleanser that removes impurities without stripping natural oils.",
+    shortDescription: "Clean, Fresh Skin Daily",
+    price: "385",
+    category: "skincare",
+    subcategory: "cleansers",
+    imageUrl: "https://images.unsplash.com/photo-1556228720-195a672e8a03?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400",
+    rating: "4.5",
+    reviewCount: 967,
+    inStock: true,
+    featured: false,
+    bestseller: false,
+    newLaunch: true,
+    size: "150ml",
+    ingredients: ["Salicylic Acid", "Aloe Vera", "Tea Tree Oil"],
+    benefits: ["Deep cleansing", "Pore refining", "Gentle formula"],
+    howToUse: "Use morning and evening. Wet face, apply, massage gently, rinse.",
+    tags: ["cleansing", "daily-use", "gentle"]
+  }
 ];
 
 export const sampleCategories: Category[] = [

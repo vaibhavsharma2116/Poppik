@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useRoute } from "wouter";
 import { Link } from "wouter";
@@ -11,16 +12,98 @@ import type { Product, Category } from "@/lib/types";
 export default function CategoryPage() {
   const [, params] = useRoute("/category/:slug");
   const categorySlug = params?.slug || "";
+  const [selectedSubcategory, setSelectedSubcategory] = useState("all");
 
   const { data: category, isLoading: categoryLoading } = useQuery<Category>({
     queryKey: [`/api/categories/${categorySlug}`],
     enabled: !!categorySlug,
   });
 
-  const { data: products, isLoading: productsLoading } = useQuery<Product[]>({
+  const { data: allProducts, isLoading: productsLoading } = useQuery<Product[]>({
     queryKey: [`/api/products/category/${categorySlug}`],
     enabled: !!categorySlug,
   });
+
+  // Filter products based on selected subcategory
+  const products = allProducts?.filter(product => {
+    if (selectedSubcategory === "all") return true;
+    return product.subcategory === selectedSubcategory;
+  });
+
+  // Get subcategories for current category
+  const getSubcategoriesForCategory = (category: string) => {
+    const subcategoryMap: Record<string, { value: string; label: string }[]> = {
+      skincare: [
+        { value: "serums", label: "Face Serums" },
+        { value: "moisturizers", label: "Moisturizers" },
+        { value: "cleansers", label: "Face Cleansers" },
+        { value: "sunscreen", label: "Sunscreen" },
+        { value: "toners", label: "Toners" },
+        { value: "masks", label: "Face Masks" },
+        { value: "eye-care", label: "Eye Care" },
+        { value: "lip-care", label: "Lip Care" },
+        { value: "acne-treatment", label: "Acne Treatment" },
+        { value: "anti-aging", label: "Anti-Aging" },
+        { value: "exfoliants", label: "Exfoliants" },
+        { value: "mists", label: "Face Mists" }
+      ],
+      haircare: [
+        { value: "shampoo", label: "Shampoos" },
+        { value: "conditioner", label: "Conditioners" },
+        { value: "oils", label: "Hair Oils" },
+        { value: "masks", label: "Hair Masks" },
+        { value: "scalp-care", label: "Scalp Care" },
+        { value: "styling", label: "Styling Products" },
+        { value: "growth-serum", label: "Hair Growth Serum" },
+        { value: "leave-in", label: "Leave-in Treatments" },
+        { value: "dry-shampoo", label: "Dry Shampoo" },
+        { value: "hair-color", label: "Hair Color" },
+        { value: "tools", label: "Hair Tools" },
+        { value: "heat-protection", label: "Heat Protection" }
+      ],
+      makeup: [
+        { value: "foundation", label: "Foundation" },
+        { value: "concealer", label: "Concealer" },
+        { value: "bb-cream", label: "BB Cream" },
+        { value: "highlighter", label: "Highlighter" },
+        { value: "blush", label: "Blush" },
+        { value: "bronzer", label: "Bronzer" },
+        { value: "mascara", label: "Mascara" },
+        { value: "eyeshadow", label: "Eyeshadow" },
+        { value: "eyeliner", label: "Eyeliner" },
+        { value: "lipstick", label: "Lipstick" },
+        { value: "lip-gloss", label: "Lip Gloss" },
+        { value: "lip-liner", label: "Lip Liner" },
+        { value: "makeup-tools", label: "Makeup Tools" },
+        { value: "makeup-sets", label: "Makeup Sets" }
+      ],
+      bodycare: [
+        { value: "body-wash", label: "Body Wash" },
+        { value: "body-lotion", label: "Body Lotion" },
+        { value: "body-oil", label: "Body Oil" },
+        { value: "body-butter", label: "Body Butter" },
+        { value: "body-scrub", label: "Body Scrub" },
+        { value: "soap", label: "Natural Soaps" },
+        { value: "hand-cream", label: "Hand Cream" },
+        { value: "foot-cream", label: "Foot Care" },
+        { value: "deodorant", label: "Deodorant" },
+        { value: "intimate-care", label: "Intimate Care" },
+        { value: "bath-salts", label: "Bath Salts" },
+        { value: "body-mist", label: "Body Mist" }
+      ],
+      fragrances: [
+        { value: "perfume", label: "Perfumes" },
+        { value: "eau-de-toilette", label: "Eau de Toilette" },
+        { value: "body-spray", label: "Body Spray" },
+        { value: "roll-on", label: "Roll-on Fragrances" },
+        { value: "solid-perfume", label: "Solid Perfume" },
+        { value: "gift-sets", label: "Fragrance Gift Sets" },
+        { value: "unisex", label: "Unisex Fragrances" },
+        { value: "travel-size", label: "Travel Size" }
+      ]
+    };
+    return subcategoryMap[category] || [];
+  };
 
   if (categoryLoading) {
     return (
@@ -70,16 +153,17 @@ export default function CategoryPage() {
 
         {/* Filters */}
         <div className="flex flex-wrap gap-4 mb-8">
-          <Select defaultValue="all">
+          <Select defaultValue="all" onValueChange={(value) => setSelectedSubcategory(value)}>
             <SelectTrigger className="w-48">
               <SelectValue placeholder="All Products" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">All Products</SelectItem>
-              <SelectItem value="serums">Face Serums</SelectItem>
-              <SelectItem value="moisturizers">Moisturizers</SelectItem>
-              <SelectItem value="cleansers">Face Wash</SelectItem>
-              <SelectItem value="sunscreen">Sunscreen</SelectItem>
+              {getSubcategoriesForCategory(categorySlug).map((subcategory) => (
+                <SelectItem key={subcategory.value} value={subcategory.value}>
+                  {subcategory.label}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
 

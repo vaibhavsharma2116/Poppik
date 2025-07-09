@@ -9,6 +9,11 @@ import Category from "@/pages/category";
 import ProductDetail from "@/pages/product-detail";
 import About from "@/pages/about";
 import Contact from "@/pages/contact";
+import Login from "@/pages/auth/login";
+import Signup from "@/pages/auth/signup";
+import Cart from "@/pages/cart";
+import Checkout from "@/pages/checkout"; // Uncomment this line if you have a Checkout page
+// import Checkout from "@/pages/checkout"
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -20,6 +25,10 @@ function Router() {
         <Route path="/product/:slug" component={ProductDetail} />
         <Route path="/about" component={About} />
         <Route path="/contact" component={Contact} />
+        <Route path="/auth/login" component={Login} />
+        <Route path="/auth/signup" component={Signup} />
+        <Route path="/cart" component={Cart} />
+        <Route path="/checkout" component={Checkout} />
         <Route component={NotFound} />
       </Switch>
     </Layout>
